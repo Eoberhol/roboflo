@@ -4,6 +4,15 @@ import numpy as np
 from roboflo.tasks import Transition
 import itertools as itt
 
+# ortool version checking
+from packaging.version import parse
+from importlib.metadata import version
+legacy_ortools = parse("9.15")
+current_ortools = parse(version("ortools"))
+LEGACY = {"ortools": True}
+if legacy_ortools < current_ortools:
+    LEGACY["ortools"] = False
+
 ### Task Scheduler
 class Scheduler:
     def __init__(self, system, protocols: list, enforce_protocol_order: bool = False):
@@ -199,7 +208,12 @@ class Scheduler:
             raise Exception(
                 "Schedule status is unknown - cannot guarantee that the schedule is valid. Consider increasing the solve_time parameter, introducing breakpoints, or reducing the complexity of your schedule."
             )
-        print(f"\tsolution status: {self.solver.status_name(status)}")
+        
+        if not LEGACY["ortools"]:
+            print(f"\tsolution status: {self.solver.status_name(status)}")
+        else:
+            print(f"\tsolution status: {self.solver.StatueName()}")
+            
         for s in self.protocols:
             for task in s.worklist:
                 if task.id in taskidlist:
