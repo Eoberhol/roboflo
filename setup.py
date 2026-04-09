@@ -8,9 +8,9 @@ with open(os.path.join(this_dir, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 requirements = [
-    "numpy ~= 1.24.0",
-    "ortools ~= 9.5.2237",
-    "matplotlib ~= 3.6.2",
+    "numpy >= 1.24.0",
+    "ortools >= 9.5.2237",
+    "matplotlib >= 3.6.2",
 ]
 
 dev_requirements = ["pytest >= 6.2.5"]
